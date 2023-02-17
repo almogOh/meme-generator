@@ -3,7 +3,7 @@
 var gSelectedImgURL = ''
 var gTexts = []
 var gPlaceText = 0
-var gMaxLine = 0
+var gMaxLine = 1
 var gCtx
 var gImgObj
 
@@ -11,29 +11,40 @@ function memeEditor(url) {
     updateSelectedImgURL(url)
     changeDiv()
     gTexts.push(createText())
-    renderCanvas()
+    gTexts.push(createText())
+    renderCanvas(1)
     renderMemeEditor()
 }
 
 function createText(){
     return {
         text: 'Add Your Text',
-        x: 150,
-        y: 70,
+        x: 155,
+        y: 60,
         id: makeId(),
         align: 'center',
-        color: '#000000',
+        color: '#ffffff',
         fontFamily: 'Impact',
         size: 35,
         isOutline: true,
         outlineWidth: 4,
-        strokeStyle: '#ffffff',
+        strokeStyle: '#000000',
     }
 }
 
 function renderMemeEditor() {
     var strHtml = `<div class="meme-editor">
                    
+                        <p>
+                        <button onclick="changeLine()"><i class="fa-solid fa-retweet"></i></button>
+                        <button onclick="addTxt()"><i class="fa-solid fa-plus"></i> Add Text</button>
+                        <button onclick="leftTxt()"><i class="fa-solid fa-align-left"></i></button>
+                        <button onclick="centerTxt()"><i class="fa-solid fa-align-center"></i></button>
+                        <button onclick="rightTxt()"><i class="fa-solid fa-align-right"></i></button>
+                        <button onclick="upTxt()"><i class="fa-solid fa-up-long"></i></button>
+                        <button onclick="downTxt()"><i class="fa-solid fa-down-long"></i></button>
+                        </p>
+    
                         <p>
                         <button onclick="deleteTxt()"><i class="fa-solid fa-eraser"></i></button>
                         <input class="text-input" type="text" data-property="text" placeholder="${gTexts[gPlaceText].text}" oninput="editTxt(this)">
@@ -56,20 +67,17 @@ function renderMemeEditor() {
                         </p>
 
                         <p>
-                        <button onclick="changeLine()"><i class="fa-solid fa-retweet"></i></button>
-                        <button onclick="addTxt()"><i class="fa-solid fa-plus"></i>Add Text</button>
-                        <button onclick="leftTxt()"><i class="fa-solid fa-align-left"></i></button>
-                        <button onclick="centerTxt()"><i class="fa-solid fa-align-center"></i></button>
-                        <button onclick="rightTxt()"><i class="fa-solid fa-align-right"></i></button>
-                        <button onclick="upTxt()"><i class="fa-solid fa-up-long"></i></button>
-                        <button onclick="downTxt()"><i class="fa-solid fa-down-long"></i></button>
-                        </p>
-
-                        <p>
                         <input id="outline" type="checkbox" data-property="isOutline" checked onclick="editTxt(this)">
                         <label for="outline">Outline</label>
                         Width: <input type="number" value="${gTexts[gPlaceText].outlineWidth}"  min="0" step="1" data-property="outlineWidth" oninput="editTxt(this)">
                         <input type="color" value="${gTexts[gPlaceText].strokeStyle}" data-property="strokeStyle" oninput="editTxt(this)">
+                        </p>
+
+                        <p>
+                        <label class="label-input" for="upload"><i class="fa-solid fa-image"></i> Upload Image</label>
+                        <input class="image-upload" id="upload" type="file" style="display: none;" onchange="onImgInput(event)">
+                        <button onclick="onUploadImg()">Share On <i class="fa-brands fa-facebook"></i></button>
+                        <a href="#" class="a" onclick="downloadImg(this)" download="my-img.jpg">Download as jpeg</a>
                         </p>
 
                         <p>
@@ -81,7 +89,7 @@ function renderMemeEditor() {
     document.querySelector('.txt-editor').innerHTML = strHtml
 }
 
-function renderCanvas() {
+function renderCanvas(lines = 0) {
     var elCanvas = document.querySelector('.canvas')
     gCtx = elCanvas.getContext('2d')
 
@@ -92,8 +100,17 @@ function renderCanvas() {
         elCanvas.width = gImgObj.width
         elCanvas.height = gImgObj.height
 
-        gTexts[gPlaceText].y = gImgObj.height - 70 //להוסיף לכל הטקסטים מיקומים
-        gTexts[gPlaceText].x = gImgObj.width * 0.5
+        if(lines){
+            gTexts[0].y = gImgObj.height / 6 * 5.5 //- gImgObj.height * 0.1 //- 70
+            gTexts[0].x = gImgObj.width * 0.5
+
+            gTexts[1].y = gImgObj.height / 6  //+ 70
+            gTexts[1].x = gImgObj.width * 0.5
+            gPlaceText = gPlaceText + 1
+        }else{
+            gTexts[gPlaceText].y = gImgObj.height * 0.5
+            gTexts[gPlaceText].x = gImgObj.width * 0.5
+        }
 
         drawCanvas()
     }

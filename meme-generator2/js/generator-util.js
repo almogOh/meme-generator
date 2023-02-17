@@ -19,6 +19,7 @@ function changeDiv() {
         elGridCon.style.display = 'none'
         gIsGallery = false
     }else{
+        onInit()
         elMemeCon.style.display = 'none'
         elGridCon.style.display = 'grid'
         gIsGallery = true
@@ -51,11 +52,7 @@ function addTxtOutline(idx) {
 }
 
 function editTxt(elinput) {
-    console.log('im in editTxt()')
-
     var property = elinput.dataset.property
-    console.log('elinput', elinput)
-    console.log('property', property)
     var value
 
     if(!gTexts.length){
@@ -77,15 +74,10 @@ function editTxt(elinput) {
     }
     gTexts[gPlaceText][property] = value
 
-    console.log('value', value)
-    console.log('gTexts[gPlaceText].property', gTexts[gPlaceText].property)
-
     drawCanvas()
 }
 
 function deleteTxt(){
-    console.log('im in deleteTxt()')
-
     if(gTexts.length === 1) {
         gTexts.push(createText())
         gMaxLine = gMaxLine + 1
@@ -102,40 +94,30 @@ function deleteTxt(){
 }
 
 function biggerTxt(){
-    console.log('im in biggerTxt()')
-
     gTexts[gPlaceText].size += 5
     drawCanvas()
     renderMemeEditor()
 }
 
 function smallerTxt(){
-    console.log('im in smallerTxt()')
-
     gTexts[gPlaceText].size -= 5
     drawCanvas()
     renderMemeEditor()
 }
 
 function leftTxt(){
-    console.log('im in leftTxt()')
-
     gTexts[gPlaceText].align = 'right' //לבדוק למה זה הפוך ימין ושמאל
     drawCanvas()
     renderMemeEditor()
 }
 
 function centerTxt(){
-    console.log('im in centerTxt()')
-
     gTexts[gPlaceText].align = 'center'
     drawCanvas()
     renderMemeEditor()
 }
 
 function rightTxt(){
-    console.log('im in rightTxt()')
-
     gTexts[gPlaceText].align = 'left' //לבדוק למה זה הפוך ימין ושמאל
     drawCanvas()
     renderMemeEditor()
@@ -156,20 +138,47 @@ function downTxt(){
 }
 
 function addTxt(){ 
-    gPlaceText++
-    gMaxLine = gPlaceText
+    gMaxLine = gMaxLine + 1
+    gPlaceText = gMaxLine
     gTexts.push(createText())
 
-    drawCanvas()
+    renderCanvas(0)
+    //drawCanvas()
     renderMemeEditor()
 }
 
 function changeLine(){ 
-    console.log('gPlaceText ', gPlaceText)
-    console.log('gMaxLine ', gMaxLine)
     if(gPlaceText < gMaxLine) gPlaceText++
-    else if(gPlaceText === gMaxLine) gPlaceText = 0
-    console.log('gPlaceText ', gPlaceText)
-    console.log('gMaxLine ', gMaxLine)
+    else gPlaceText = 0
+    document.querySelector('.text-input').value = gTexts[gPlaceText].text
+}
+
+/*function onDragStart(event) {
+    event
+        .dataTransfer
+        .setData('text/plain', event.target.id)
+}
+
+function onDragOver(event) {
+    event.preventDefault()
+}
+
+function onDrop(event) {
+    const id = event
+      .dataTransfer
+      .getData('text')
+
+    const draggableElement = document.querySelector('.picture')
+    const dropzone = event.target
+    dropzone.appendChild(draggableElement)
+
+    event
+    .dataTransfer
+    .clearData()
+}*/
+
+function downloadImg(elLink) {
+    const imgContent = gElCanvas.toDataURL('image/jpeg') // image/jpeg the default format
+    elLink.href = imgContent
 }
 

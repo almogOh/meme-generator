@@ -3,6 +3,9 @@
 var gImgs = []
 
 function onInit() {
+    gTexts = []
+    gPlaceText = 0
+    gMaxLine = 1
     gIsGallery = true
     pushImages()
     renderImages()

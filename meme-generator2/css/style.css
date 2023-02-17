@@ -5,7 +5,7 @@
 body{
     font-size: 18px;
     line-height: 20px;
-    background: no-repeat url("../img/body.jpg");
+    background: repeat url("../img/body.jpg");
     background-size: 100%;
 }
 
@@ -71,5 +71,27 @@ button{
 }
 
 button:hover{
+    background-color: rgb(200, 162, 216);
+}
+
+.label-input{
+    cursor: pointer;
+    border: 1px #000000 solid;
+    padding: 3px;
+    border-radius: 5px;
+}
+
+.label-input:hover{
+    background-color: rgb(200, 162, 216);
+}
+
+.a{
+    cursor: pointer;
+    border: 1px #000000 solid;
+    padding: 3px;
+    border-radius: 5px;
+}
+
+.a:hover{
     background-color: rgb(200, 162, 216);
 }
