@@ -13,7 +13,7 @@ function onInit() {
 
 function pushImages() {
     for (var i = 1; i < 19; i++) {
-        gImgs.push(createImage(`../img/squares/${i}.jpg`, 'happy'))
+        gImgs.push(createImage(`img/squares/${i}.jpg`, 'happy'))
     }
 }
 
